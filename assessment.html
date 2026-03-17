@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Path | Assessment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+        }
+
+        body {
+            background: #1a1a2e;
+            min-height: 100vh;
+        }
+
+        /* Login Check */
+        .login-check {
+            display: none;
+        }
+
+        .assessment-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .assessment-header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 40px;
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #00d4ff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .header-content p {
+            color: #b0b0d0;
+            max-width: 600px;
+            margin: 0 auto 25px;
+            line-height: 1.6;
+        }
+
+        .assessment-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #00d4ff;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .progress-title {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .progress-percentage {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .progress-bar-container {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #00b8d4);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .step {
+            color: #b0b0d0;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .step.active {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        /* Assessment Form */
+        .assessment-form {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .question-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-number {
+            color: #00d4ff;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            color: #ffffff;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .option-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .option-card:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateY(-3px);
+        }
+
+        .option-card.selected {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .option-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 212, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #00d4ff;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex-grow: 1;
+        }
+
+        .option-title {
+            color: #ffffff;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .option-description {
+            color: #b0b0d0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Navigation Buttons */
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-nav {
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 25px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            color: white;
+        }
+
+        .btn-nav:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #00d4ff, #00b8d4);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-hidden {
+            visibility: hidden;
+        }
+
+        /* Question Indicators */
+        .question-indicators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.answered {
+            background: #00d4ff;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .indicator.current {
+            transform: scale(1.3);
+            background: #ffffff;
+        }
+
+        /* Submit Container */
+        .submit-container {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        /* Back Link */
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link a {
+            color: #00d4ff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link a:hover {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 10px 30px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .assessment-container {
+                padding: 15px;
+            }
+
+            .header-content h1 {
+                font-size: 2rem;
+            }
+
+            .assessment-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .assessment-form {
+                padding: 20px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn-nav, .btn-submit {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .option-card {
+                padding: 15px;
+            }
+
+            .option-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .question-indicators {
+                gap: 8px;
+            }
+
+            .indicator {
+                width: 10px;
+                height: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Check Script -->
+    <div class="login-check"></div>
+    <script>
+        // Check if user is logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            // Redirect to login page
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <div class="assessment-container">
+        <!-- Header -->
+        <div class="assessment-header">
+            <div class="header-content">
+                <h1>Career Assessment</h1>
+                <p>Answer these questions to help us understand your interests, skills, and personality. Your responses will help us recommend the perfect career paths for you.</p>
+                
+                <div class="assessment-info">
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <span>10-15 minutes</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-question-circle"></i>
+                        <span>10 questions</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Personalized Results</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <div class="progress-title">Assessment Progress</div>
+                <div class="progress-percentage" id="progressPercentage">0%</div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-steps">
+                <div class="step active">Start</div>
+                <div class="step">Interests</div>
+                <div class="step">Skills</div>
+                <div class="step">Goals</div>
+                <div class="step">Complete</div>
+            </div>
+        </div>
+
+        <!-- Assessment Form -->
+        <div class="assessment-form">
+            <!-- Questions will be dynamically generated here -->
+            <div id="questionsContainer"></div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button class="btn-nav btn-hidden" id="prevBtn">
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                
+                <div class="question-indicators" id="questionIndicators">
+                    <!-- Indicators will be generated by JavaScript -->
+                </div>
+                
+                <button class="btn-nav" id="nextBtn">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="submit-container" id="submitContainer">
+                <button class="btn-submit" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i> Submit Assessment
+                </button>
+            </div>
+        </div>
+
+        <!-- Back Link -->
+        <div class="back-link">
+            <a href="dashboard.html">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Career Assessment Questions
+        const questions = [
+            {
+                id: 1,
+                text: "Which field interests you the most?",
+                options: [
+                    { 
+                        value: "technology", 
+                        icon: "fas fa-laptop-code", 
+                        title: "Technology & Computing", 
+                        description: "Software, hardware, networks, and digital systems" 
+                    },
+                    { 
+                        value: "science", 
+                        icon: "fas fa-flask", 
+                        title: "Science & Research", 
+                        description: "Experiments, discoveries, and understanding nature" 
+                    },
+                    { 
+                        value: "creative", 
+                        icon: "fas fa-paint-brush", 
+                        title: "Creative Arts", 
+                        description: "Design, art, writing, music, and creative expression" 
+                    },
+                    { 
+                        value: "business", 
+                        icon: "fas fa-chart-line", 
+                        title: "Business & Management", 
+                        description: "Organizations, finance, marketing, and leadership" 
+                    }
+                ]
+            },
+            {
+                id: 2,
+                text: "What is your preferred work style?",
+                options: [
+                    { 
+                        value: "independent", 
+                        icon: "fas fa-user", 
+                        title: "Independent", 
+                        description: "I prefer working alone with minimal supervision" 
+                    },
+                    { 
+                        value: "team", 
+                        icon: "fas fa-users", 
+                        title: "Team Collaboration", 
+                        description: "I enjoy working with others towards common goals" 
+                    },
+                    { 
+                        value: "structured", 
+                        icon: "fas fa-tasks", 
+                        title: "Structured", 
+                        description: "I like clear instructions and organized workflows" 
+                    },
+                    { 
+                        value: "flexible", 
+                        icon: "fas fa-lightbulb", 
+                        title: "Flexible/Creative", 
+                        description: "I prefer open-ended problems and creative freedom" 
+                    }
+                ]
+            },
+            {
+                id: 3,
+                text: "Which school subject do you enjoy the most?",
+                options: [
+                    { 
+                        value: "math", 
+                        icon: "fas fa-calculator", 
+                        title: "Mathematics", 
+                        description: "Numbers, equations, and logical problem-solving" 
+                    },
+                    { 
+                        value: "science", 
+                        icon: "fas fa-atom", 
+                        title: "Science", 
+                        description: "Physics, chemistry, biology, and experiments" 
+                    },
+                    { 
+                        value: "arts", 
+                        icon: "fas fa-palette", 
+                        title: "Arts & Humanities", 
+                        description: "Literature, history, languages, and social studies" 
+                    },
+                    { 
+                        value: "tech", 
+                        icon: "fas fa-code", 
+                        title: "Computer/Tech", 
+                        description: "Programming, IT, robotics, and digital technology" 
+                    }
+                ]
+            },
+            {
+                id: 4,
+                text: "How do you approach problem-solving?",
+                options: [
+                    { 
+                        value: "analytical", 
+                        icon: "fas fa-chart-bar", 
+                        title: "Analytically", 
+                        description: "Break down problems logically with data and facts" 
+                    },
+                    { 
+                        value: "creative", 
+                        icon: "fas fa-lightbulb", 
+                        title: "Creatively", 
+                        description: "Think outside the box and find innovative solutions" 
+                    },
+                    { 
+                        value: "practical", 
+                        icon: "fas fa-tools", 
+                        title: "Practically", 
+                        description: "Focus on hands-on, real-world applications" 
+                    },
+                    { 
+                        value: "collaborative", 
+                        icon: "fas fa-hands-helping", 
+                        title: "Collaboratively", 
+                        description: "Work with others to brainstorm and implement solutions" 
+                    }
+                ]
+            },
+            {
+                id: 5,
+                text: "What are your career goals?",
+                options: [
+                    { 
+                        value: "innovation", 
+                        icon: "fas fa-rocket", 
+                        title: "Innovate & Create", 
+                        description: "Develop new technologies or create original work" 
+                    },
+                    { 
+                        value: "help", 
+                        icon: "fas fa-hands-helping", 
+                        title: "Help Others", 
+                        description: "Make a positive impact on people's lives" 
+                    },
+                    { 
+                        value: "lead", 
+                        icon: "fas fa-crown", 
+                        title: "Lead & Manage", 
+                        description: "Guide teams and organizations to success" 
+                    },
+                    { 
+                        value: "explore", 
+                        icon: "fas fa-search", 
+                        title: "Explore & Discover", 
+                        description: "Research and uncover new knowledge" 
+                    }
+                ]
+            },
+            {
+                id: 6,
+                text: "What type of skills do you enjoy developing?",
+                options: [
+                    { 
+                        value: "technical", 
+                        icon: "fas fa-cogs", 
+                        title: "Technical Skills", 
+                        description: "Programming, engineering, or specialized tools" 
+                    },
+                    { 
+                        value: "analytical", 
+                        icon: "fas fa-brain", 
+                        title: "Analytical Skills", 
+                        description: "Data analysis, research, and critical thinking" 
+                    },
+                    { 
+                        value: "creative", 
+                        icon: "fas fa-paint-brush", 
+                        title: "Creative Skills", 
+                        description: "Design, writing, art, or musical abilities" 
+                    },
+                    { 
+                        value: "social", 
+                        icon: "fas fa-comments", 
+                        title: "Social Skills", 
+                        description: "Communication, leadership, and teamwork" 
+                    }
+                ]
+            },
+            {
+                id: 7,
+                text: "What kind of work environment do you prefer?",
+                options: [
+                    { 
+                        value: "office", 
+                        icon: "fas fa-building", 
+                        title: "Office Setting", 
+                        description: "Structured corporate or business environment" 
+                    },
+                    { 
+                        value: "lab", 
+                        icon: "fas fa-flask", 
+                        title: "Lab/Research", 
+                        description: "Scientific laboratories or research facilities" 
+                    },
+                    { 
+                        value: "creative", 
+                        icon: "fas fa-palette", 
+                        title: "Creative Studio", 
+                        description: "Art studios, design firms, or media companies" 
+                    },
+                    { 
+                        value: "flexible", 
+                        icon: "fas fa-laptop-house", 
+                        title: "Flexible/Remote", 
+                        description: "Work from anywhere with flexible hours" 
+                    }
+                ]
+            },
+            {
+                id: 8,
+                text: "What type of projects excite you?",
+                options: [
+                    { 
+                        value: "tech", 
+                        icon: "fas fa-robot", 
+                        title: "Tech Projects", 
+                        description: "Building apps, websites, or tech solutions" 
+                    },
+                    { 
+                        value: "research", 
+                        icon: "fas fa-search", 
+                        title: "Research Projects", 
+                        description: "Investigating questions and finding answers" 
+                    },
+                    { 
+                        value: "creative", 
+                        icon: "fas fa-film", 
+                        title: "Creative Projects", 
+                        description: "Design, art, writing, or media production" 
+                    },
+                    { 
+                        value: "business", 
+                        icon: "fas fa-chart-pie", 
+                        title: "Business Projects", 
+                        description: "Planning, organizing, and managing initiatives" 
+                    }
+                ]
+            },
+            {
+                id: 9,
+                text: "Which emerging technology interests you most?",
+                options: [
+                    { 
+                        value: "ai", 
+                        icon: "fas fa-brain", 
+                        title: "Artificial Intelligence", 
+                        description: "Machine learning, neural networks, and smart systems" 
+                    },
+                    { 
+                        value: "biotech", 
+                        icon: "fas fa-dna", 
+                        title: "Biotechnology", 
+                        description: "Genetic engineering, medical technology, and healthcare" 
+                    },
+                    { 
+                        value: "green", 
+                        icon: "fas fa-leaf", 
+                        title: "Green Technology", 
+                        description: "Renewable energy, sustainability, and environmental tech" 
+                    },
+                    { 
+                        value: "space", 
+                        icon: "fas fa-rocket", 
+                        title: "Space Technology", 
+                        description: "Space exploration, satellite technology, and aerospace" 
+                    }
+                ]
+            },
+            {
+                id: 10,
+                text: "What's most important to you in a career?",
+                options: [
+                    { 
+                        value: "impact", 
+                        icon: "fas fa-star", 
+                        title: "Making an Impact", 
+                        description: "Creating meaningful change in the world" 
+                    },
+                    { 
+                        value: "learning", 
+                        icon: "fas fa-graduation-cap", 
+                        title: "Continuous Learning", 
+                        description: "Always growing and developing new skills" 
+                    },
+                    { 
+                        value: "balance", 
+                        icon: "fas fa-balance-scale", 
+                        title: "Work-Life Balance", 
+                        description: "Having time for personal life and interests" 
+                    },
+                    { 
+                        value: "success", 
+                        icon: "fas fa-trophy", 
+                        title: "Professional Success", 
+                        description: "Achieving recognition and career advancement" 
+                    }
+                ]
+            }
+        ];
+
+        // Career Fields Database
+        const careerFields = {
+            "STEM": {
+                name: "STEM Careers",
+                description: "Science, Technology, Engineering, and Mathematics fields",
+                icon: "fas fa-atom",
+                matchOptions: ["technology", "science", "math", "tech", "analytical", "technical", "ai", "innovation"],
+                careers: [
+                    { name: "Software Developer", icon: "fas fa-code", match: 95 },
+                    { name: "Data Scientist", icon: "fas fa-chart-bar", match: 90 },
+                    { name: "AI Engineer", icon: "fas fa-robot", match: 92 },
+                    { name: "Cybersecurity Analyst", icon: "fas fa-shield-alt", match: 85 }
+                ]
+            },
+            "Creative": {
+                name: "Creative Arts",
+                description: "Design, media, arts, and creative expression fields",
+                icon: "fas fa-paint-brush",
+                matchOptions: ["creative", "arts", "flexible", "creative", "design", "artistic"],
+                careers: [
+                    { name: "Graphic Designer", icon: "fas fa-pen-fancy", match: 88 },
+                    { name: "UI/UX Designer", icon: "fas fa-object-group", match: 85 },
+                    { name: "Video Editor", icon: "fas fa-film", match: 82 },
+                    { name: "Animator", icon: "fas fa-play-circle", match: 80 }
+                ]
+            },
+            "Business": {
+                name: "Business & Management",
+                description: "Leadership, management, and entrepreneurial fields",
+                icon: "fas fa-chart-line",
+                matchOptions: ["business", "structured", "lead", "business", "success", "management"],
+                careers: [
+                    { name: "Project Manager", icon: "fas fa-tasks", match: 87 },
+                    { name: "Marketing Specialist", icon: "fas fa-bullhorn", match: 83 },
+                    { name: "Business Analyst", icon: "fas fa-chart-pie", match: 85 },
+                    { name: "Entrepreneur", icon: "fas fa-lightbulb", match: 90 }
+                ]
+            },
+            "Healthcare": {
+                name: "Healthcare & Helping",
+                description: "Medical, therapeutic, and helping professions",
+                icon: "fas fa-heartbeat",
+                matchOptions: ["help", "collaborative", "balance", "biotech", "impact"],
+                careers: [
+                    { name: "Medical Researcher", icon: "fas fa-flask", match: 88 },
+                    { name: "Healthcare IT", icon: "fas fa-stethoscope", match: 85 },
+                    { name: "Genetic Counselor", icon: "fas fa-dna", match: 82 },
+                    { name: "Public Health Analyst", icon: "fas fa-clipboard-list", match: 80 }
+                ]
+            },
+            "Environmental": {
+                name: "Environmental & Green Tech",
+                description: "Sustainability, environmental science, and green technology",
+                icon: "fas fa-leaf",
+                matchOptions: ["green", "explore", "practical", "research"],
+                careers: [
+                    { name: "Environmental Scientist", icon: "fas fa-tree", match: 90 },
+                    { name: "Renewable Energy Engineer", icon: "fas fa-solar-panel", match: 87 },
+                    { name: "Sustainability Consultant", icon: "fas fa-recycle", match: 85 },
+                    { name: "Climate Analyst", icon: "fas fa-cloud-sun", match: 82 }
+                ]
+            }
+        };
+
+        // Initialize variables
+        let currentQuestion = 1;
+        const totalQuestions = questions.length;
+        let userResponses = {};
+
+        // Initialize the assessment
+        function initAssessment() {
+            generateQuestions();
+            updateProgress();
+            createQuestionIndicators();
+            updateNavigation();
+            
+            // Add event listeners to option cards
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.option-card')) {
+                    const optionCard = e.target.closest('.option-card');
+                    const questionId = parseInt(optionCard.closest('.question-container').dataset.questionId);
+                    const value = optionCard.dataset.value;
+                    
+                    // Remove selected class from all options in this question
+                    optionCard.parentElement.querySelectorAll('.option-card').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    optionCard.classList.add('selected');
+                    
+                    // Store response
+                    userResponses[questionId] = value;
+                    
+                    // Update indicators
+                    updateQuestionIndicators();
+                    
+                    // Enable next button
+                    const nextBtn = document.getElementById('nextBtn');
+                    nextBtn.disabled = false;
+                    
+                    // Check if we should show submit button
+                    if (currentQuestion === totalQuestions && userResponses[currentQuestion]) {
+                        showSubmitButton();
+                    }
+                }
+            });
+            
+            // Navigation buttons
+            document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+            document.getElementById('prevBtn').addEventListener('click', prevQuestion);
+            document.getElementById('submitBtn').addEventListener('click', submitAssessment);
+        }
+
+        // Generate questions dynamically
+        function generateQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            
+            questions.forEach(question => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = `question-container ${question.id === 1 ? 'active' : ''}`;
+                questionDiv.id = `question${question.id}`;
+                questionDiv.dataset.questionId = question.id;
+                
+                let optionsHTML = '';
+                question.options.forEach(option => {
+                    optionsHTML += `
+                        <div class="option-card" data-value="${option.value}">
+                            <div class="option-content">
+                                <div class="option-icon">
+                                    <i class="${option.icon}"></i>
+                                </div>
+                                <div class="option-text">
+                                    <div class="option-title">${option.title}</div>
+                                    <div class="option-description">${option.description}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                questionDiv.innerHTML = `
+                    <div class="question-number">Question ${question.id} of ${totalQuestions}</div>
+                    <h3 class="question-text">${question.text}</h3>
+                    <div class="options-grid">${optionsHTML}</div>
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            const progressBar = document.getElementById('progressBar');
+            const progressPercentage = document.getElementById('progressPercentage');
+            
+            progressBar.style.width = `${progress}%`;
+            progressPercentage.textContent = `${Math.round(progress)}%`;
+            
+            // Update progress steps
+            const stepNum = Math.min(Math.ceil(currentQuestion / 2), 5);
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active');
+                if (index < stepNum) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        // Create question indicators
+        function createQuestionIndicators() {
+            const container = document.getElementById('questionIndicators');
+            container.innerHTML = '';
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const indicator = document.createElement('div');
+                indicator.className = 'indicator';
+                if (i === 1) indicator.classList.add('current');
+                indicator.dataset.question = i;
+                
+                indicator.addEventListener('click', function() {
+                    const targetQuestion = parseInt(this.dataset.question);
+                    if (targetQuestion !== currentQuestion) {
+                        goToQuestion(targetQuestion);
+                    }
+                });
+                
+                container.appendChild(indicator);
+            }
+        }
+
+        // Update question indicators
+        function updateQuestionIndicators() {
+            document.querySelectorAll('.indicator').forEach((indicator, index) => {
+                const questionNum = index + 1;
+                indicator.classList.remove('current', 'answered');
+                
+                if (questionNum === currentQuestion) {
+                    indicator.classList.add('current');
+                }
+                
+                if (userResponses[questionNum]) {
+                    indicator.classList.add('answered');
+                }
+            });
+        }
+
+        // Show a specific question
+        function showQuestion(questionNum) {
+            // Hide all questions
+            document.querySelectorAll('.question-container').forEach(q => {
+                q.classList.remove('active');
+            });
+            
+            // Show the requested question
+            const questionEl = document.getElementById(`question${questionNum}`);
+            if (questionEl) {
+                questionEl.classList.add('active');
+                currentQuestion = questionNum;
+                updateProgress();
+                updateNavigation();
+                updateQuestionIndicators();
+                
+                // Check if we should show submit button
+                if (currentQuestion === totalQuestions && userResponses[currentQuestion]) {
+                    showSubmitButton();
+                } else {
+                    hideSubmitButton();
+                }
+            }
+        }
+
+        // Go to next question
+        function nextQuestion() {
+            if (!userResponses[currentQuestion]) {
+                alert('Please select an answer before continuing.');
+                return;
+            }
+            
+            if (currentQuestion < totalQuestions) {
+                showQuestion(currentQuestion + 1);
+            }
+        }
+
+        // Go to previous question
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                showQuestion(currentQuestion - 1);
+            }
+        }
+
+        // Go to specific question
+        function goToQuestion(questionNum) {
+            if (questionNum >= 1 && questionNum <= totalQuestions) {
+                showQuestion(questionNum);
+            }
+        }
+
+        // Update navigation buttons
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitContainer = document.getElementById('submitContainer');
+            
+            // Previous button
+            if (currentQuestion === 1) {
+                prevBtn.classList.add('btn-hidden');
+            } else {
+                prevBtn.classList.remove('btn-hidden');
+            }
+            
+            // Next button text
+            if (currentQuestion === totalQuestions) {
+                nextBtn.innerHTML = 'Review <i class="fas fa-check"></i>';
+            } else {
+                nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+            }
+            
+            // Enable/disable next button based on answer
+            nextBtn.disabled = !userResponses[currentQuestion];
+            
+            // Show/hide submit container
+            if (currentQuestion === totalQuestions && Object.keys(userResponses).length === totalQuestions) {
+                submitContainer.style.display = 'block';
+                nextBtn.style.display = 'none';
+            } else {
+                submitContainer.style.display = 'none';
+                nextBtn.style.display = 'flex';
+            }
+        }
+
+        // Show submit button
+        function showSubmitButton() {
+            const submitContainer = document.getElementById('submitContainer');
+            const nextBtn = document.getElementById('nextBtn');
+            submitContainer.style.display = 'block';
+            nextBtn.style.display = 'none';
+        }
+
+        // Hide submit button
+        function hideSubmitButton() {
+            const submitContainer = document.getElementById('submitContainer');
+            const nextBtn = document.getElementById('nextBtn');
+            submitContainer.style.display = 'none';
+            nextBtn.style.display = 'flex';
+        }
+
+        // Calculate field scores
+        function calculateFieldScores() {
+            const fieldScores = {};
+            
+            // Initialize all fields
+            Object.keys(careerFields).forEach(field => {
+                fieldScores[field] = 0;
+            });
+            
+            // Calculate scores based on responses
+            Object.values(userResponses).forEach(response => {
+                Object.entries(careerFields).forEach(([field, data]) => {
+                    if (data.matchOptions.includes(response)) {
+                        fieldScores[field] += 10;
+                    }
+                });
+            });
+            
+            // Get top 3 fields
+            const sortedFields = Object.entries(fieldScores)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+            
+            return sortedFields;
+        }
+
+        // Calculate top careers
+        function calculateTopCareers(topFields) {
+            const allCareers = [];
+            
+            topFields.forEach(([field, score]) => {
+                careerFields[field].careers.forEach(career => {
+                    // Adjust match based on field score
+                    const adjustedMatch = Math.min(100, career.match + (score / 10));
+                    allCareers.push({
+                        ...career,
+                        field: field,
+                        adjustedMatch: Math.round(adjustedMatch)
+                    });
+                });
+            });
+            
+            // Sort by adjusted match and get top 4
+            return allCareers
+                .sort((a, b) => b.adjustedMatch - a.adjustedMatch)
+                .slice(0, 4);
+        }
+                const answerScoreMap = {
+            // Q1 values
+            "technology": 5,
+            "science": 4,
+            "creative": 5,
+            "business": 3,
+            // Q2 values
+            "independent": 4,
+            "team": 5,
+            "structured": 3,
+            "flexible": 4,
+            // Q3 values
+            "math": 5,
+            "arts": 3,
+            "tech": 5,
+            // Q4 values
+            "analytical": 4,
+            "practical": 4,
+            "collaborative": 5,
+            // Q5 values
+            "innovation": 5,
+            "help": 5,
+            "lead": 4,
+            "explore": 4,
+            // Q6 values
+            "technical": 5,
+            "analytical": 4,
+            "creative": 5,
+            "social": 5,
+            // Q7 values
+            "office": 3,
+            "lab": 4,
+            "creative": 5,      // corrected: was "creative studio"
+            "flexible": 5,
+            // Q8 values
+            "tech": 5,
+            "research": 4,
+            "creative": 5,
+            "business": 3,
+            // Q9 values
+            "ai": 5,
+            "biotech": 5,
+            "green": 4,
+            "space": 5,
+            // Q10 values
+            "impact": 5,
+            "learning": 4,
+            "balance": 3,
+            "success": 4
+        };
+
+        // Submit assessment (send 10 features to Flask)
+        async function submitAssessment() {
+            if (Object.keys(userResponses).length < totalQuestions) {
+                alert("Please answer all questions");
+                return;
+            }
+
+            // Build a feature array of 10 numbers (one per question)
+            const featureVector = [];
+            for (let i = 1; i <= totalQuestions; i++) {
+                const answer = userResponses[i];   // e.g., "technology"
+                const score = answerScoreMap[answer] || 3; // default 3 if missing
+                featureVector.push(score);
+            }
+            console.log("Feature vector:", featureVector);
+
+            try {
+                const response = await fetch('http://localhost:5001/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ features: featureVector })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("AI response:", data);
+
+                const results = {
+                    userResponses: userResponses,
+                    aiResult: data,
+                    completedDate: new Date().toISOString()
+                };
+                localStorage.setItem('careerAssessmentResults', JSON.stringify(results));
+
+                window.location.href = 'result.html';
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Cannot connect to AI server. Make sure Flask is running on port 5001.');
+            }
+        }
+
+        // Update dashboard statistics (optional – keep if used)
+        function updateDashboardStats(results) {
+            let dashboardStats = JSON.parse(localStorage.getItem('dashboardStats')) || {
+                careerMatchScore: 0,
+                skillsAssessed: 0,
+                recommendedPaths: 0,
+                progressCompleted: 0
+            };
+            dashboardStats.careerMatchScore = results.overallScore;
+            dashboardStats.skillsAssessed = Object.keys(userResponses).length;
+            dashboardStats.recommendedPaths = results.topFields?.length || 0;
+            dashboardStats.progressCompleted = 100;
+            localStorage.setItem('dashboardStats', JSON.stringify(dashboardStats));
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initAssessment);
+    </script>
+</body>
+</html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Path | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+        }
+        
+
+        body {
+            background: #1a1a2e;
+            min-height: 100vh;
+        }
+
+        /* Login Check */
+        .login-check {
+            display: none;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .header-left h1 {
+            font-size: 2rem;
+            background: linear-gradient(45deg, #00d4ff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-left p {
+            color: #b0b0d0;
+            margin-top: 5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00d4ff, #00b8d4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+
+        .btn-logout {
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-logout:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #00d4ff;
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00d4ff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #b0b0d0;
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .main-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #ffffff;
+        }
+
+        .view-all {
+            color: #00d4ff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        /* Career Recommendations */
+        .career-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .career-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .career-item:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateX(5px);
+        }
+
+        .career-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: rgba(0, 212, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #00d4ff;
+        }
+
+        .career-info h4 {
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .career-info p {
+            color: #b0b0d0;
+            font-size: 0.9rem;
+        }
+
+        .match-score {
+            margin-left: auto;
+            padding: 5px 15px;
+            background: rgba(0, 212, 255, 0.2);
+            border-radius: 15px;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+
+        /* Assessment Card */
+        .assessment-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 184, 212, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .assessment-content {
+            text-align: center;
+        }
+
+        .assessment-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .assessment-content p {
+            color: #b0b0d0;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .btn-start-assessment {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #00d4ff, #00b8d4);
+            color: #1a1a2e;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-start-assessment:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Progress Section */
+        .progress-item {
+            margin-bottom: 20px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-label {
+            color: #ffffff;
+        }
+
+        .progress-value {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #00b8d4);
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            transform: translateY(-3px);
+        }
+
+        .action-icon {
+            font-size: 2rem;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .action-label {
+            font-size: 0.9rem;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 15px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-right {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .user-profile {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Check Script -->
+    <div class="login-check"></div>
+    <script>
+        // Check if user is logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            // Redirect to login page
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>Welcome Back, <span id="userName">Student</span>!</h1>
+                <p>Your AI Career Journey Dashboard</p>
+            </div>
+            <div class="header-right">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">S</div>
+                    <div class="user-info">
+                        <div class="user-name" id="displayUserName">Student</div>
+                        <div class="user-status">High School Student</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-star"></i>
+</div>
+<div class="stat-value" id="careerScore">0%</div>
+<div class="stat-label">Career Match Score</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-tasks"></i>
+</div>
+<div class="stat-value" id="skillsAssessed">0/8</div>
+<div class="stat-label">Skills Assessed</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-clock"></i>
+</div>
+<div class="stat-value" id="recommendedPaths">0</div>
+<div class="stat-label">Recommended Paths</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-chart-line"></i>
+</div>
+<div class="stat-value" id="progressCompleted">0%</div>
+<div class="stat-label">Progress Completed</div>
+</div>
+
+</div>
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <!-- Left Column -->
+            <div class="main-section">
+                <!-- Career Recommendations -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Top Career Recommendations</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="career-list">
+                        <a href="#" class="career-item">
+                            <div class="career-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="career-info">
+                                <h4>Machine Learning Engineer</h4>
+                                <p>Design and implement AI models that learn from data</p>
+                            </div>
+                            <div class="match-score">95% Match</div>
+                        </a>
+                        
+                        <a href="#" class="career-item">
+                            <div class="career-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="career-info">
+                                <h4>Computer Vision Specialist</h4>
+                                <p>Develop AI systems that interpret visual information</p>
+                            </div>
+                            <div class="match-score">88% Match</div>
+                        </a>
+                        
+                        <a href="#" class="career-item">
+                            <div class="career-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="career-info">
+                                <h4>NLP Engineer</h4>
+                                <p>Create AI that understands and generates human language</p>
+                            </div>
+                            <div class="match-score">82% Match</div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Assessment Card -->
+                <div class="card assessment-card">
+                    <div class="assessment-content">
+                        <h3>Complete Your AI Career Assessment</h3>
+                        <p>Take our comprehensive assessment to get personalized career recommendations based on your skills, interests, and goals. Unlock detailed insights about AI career paths tailored for you.</p>
+                        <a href="assessment.html" class="btn-start-assessment">
+                            <i class="fas fa-play-circle"></i> Start Assessment
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="sidebar-section">
+                <!-- Progress Tracking -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Your Progress</h3>
+                    </div>
+                    <div class="progress-list">
+                        <div class="progress-item">
+<div class="progress-header">
+<span class="progress-label">Technical Skills</span>
+<span class="progress-value" id="technicalSkillsText">0%</span>
+</div>
+<div class="progress-bar">
+<div class="progress-fill" id="technicalSkillsBar" style="width:0%"></div>
+</div>
+</div>
+                        <div class="progress-item">
+<div class="progress-header">
+<span class="progress-label">Career Knowledge</span>
+<span class="progress-value" id="careerKnowledgeText">0%</span>
+</div>
+<div class="progress-bar">
+<div class="progress-fill" id="careerKnowledgeBar" style="width:0%"></div>
+</div>
+</div>
+                        
+                        <div class="progress-item">
+<div class="progress-header">
+<span class="progress-label">Assessment</span>
+<span class="progress-value" id="assessmentText">0%</span>
+</div>
+<div class="progress-bar">
+<div class="progress-fill" id="assessmentBar" style="width:0%"></div>
+</div>
+</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Quick Actions</h3>
+                    </div>
+                    <div class="quick-actions">
+                        <a href="assessment.html" class="action-btn">
+                            <div class="action-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div class="action-label">Retake Assessment</div>
+                        </a>
+                        
+                        <a href="result.html" class="action-btn">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="action-label">View Results</div>
+                        </a>
+                        
+                        <a href="#" class="action-btn">
+                            <div class="action-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="action-label">Resources</div>
+                        </a>
+                        
+                        <a href="#" class="action-btn">
+                            <div class="action-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div class="action-label">Settings</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Update user info
+        const currentUser = localStorage.getItem('currentUser') || 'Student';
+        document.getElementById('userName').textContent = currentUser;
+        document.getElementById('displayUserName').textContent = currentUser;
+        document.getElementById('userAvatar').textContent = currentUser.charAt(0).toUpperCase();
+
+        // Load assessment results from localStorage
+        const storedResults = JSON.parse(localStorage.getItem('careerAssessmentResults'));
+        if (storedResults && storedResults.aiResult && storedResults.aiResult.careers) {
+            const careers = storedResults.aiResult.careers;
+            const careerItems = document.querySelectorAll('.career-item');
+
+            // Update top 3 career recommendations
+            careerItems.forEach((item, index) => {
+                if (index < careers.length) {
+                    const career = careers[index];
+                    const titleEl = item.querySelector('h4');
+                    const matchEl = item.querySelector('.match-score');
+                    if (titleEl) titleEl.textContent = career.name;
+
+                    // Override match percentages as requested
+                    let matchValue = career.match;
+                    if (index === 0) matchValue = 95;
+                    else if (index === 1) matchValue = 85;
+                    else if (index === 2) matchValue = 75;
+                    if (matchEl) matchEl.textContent = matchValue + '% Match';
+                }
+            });
+
+            // Set overall career match score to 95% (fixed)
+            document.getElementById('careerScore').textContent = '95%';
+
+            // Update other stats (unchanged)
+            document.getElementById('skillsAssessed').textContent = '10/10';
+            document.getElementById('recommendedPaths').textContent = Math.min(3, careers.length);
+            document.getElementById('progressCompleted').textContent = '100%';
+            document.getElementById('assessmentText').textContent = '100%';
+            document.getElementById('assessmentBar').style.width = '100%';
+        }
+
+        // Initialize progress bars animation
+        const progressBars = document.querySelectorAll('.progress-fill');
+        progressBars.forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0';
+            setTimeout(() => {
+                bar.style.width = width;
+            }, 500);
+        });
+
+        // Add hover effects to career items
+        const careerItems = document.querySelectorAll('.career-item');
+        careerItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(10px)';
+            });
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('assessmentResponses');
+            localStorage.removeItem('careerAssessmentResults');
+            window.location.href = 'index.html';
+        });
+    });
+</script>
+</body>
+</html>

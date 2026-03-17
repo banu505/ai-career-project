@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "express": "^4.22.1",
+    "mongoose": "^8.23.0",
+    "mysql2": "^3.19.1",
+    "oracledb": "^6.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
