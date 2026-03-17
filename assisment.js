@@ -12,7 +12,7 @@ try{
 
 const answers = Object.values(userResponses)
 
-const response = await fetch("http://localhost:3000/predict-career",{
+const response = await fetch("https://ai-career-project.onrender.com/predict-career",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
