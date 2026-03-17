@@ -81,7 +81,7 @@ app.post("/login", (req, res) => {
 /* ---------------- AI CAREER PREDICTION ---------------- */
 
 /* ---------------- AI CAREER PREDICTION ---------------- */
-app.post("/predict-career", async (req, res) => {
+fetch("https://your-app.onrender.com/api/predict-career", {
 
     const { answers, userId } = req.body;
 
